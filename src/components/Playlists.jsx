@@ -74,7 +74,7 @@ const Container = styled.div`
   border-radius: 10px;
   ul {
     overflow: auto;
-    height: 45vh !important;
+    height: 51vh !important;
     list-style: none;
     padding: 0 !important;
     display: flex;

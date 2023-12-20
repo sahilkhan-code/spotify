@@ -9,7 +9,9 @@ export const initialState = {
   searchData: null,
   releaseData: null,
   topData:null,
-  currentTrackData:null
+  currentTrackData:null,
+  currentPlaying: null,
+  playerState: false,
 };
 
 const reducer = (state, action) => {
@@ -68,6 +70,16 @@ const reducer = (state, action) => {
         currentTrackData: action.currentTrackData,
       };
     }
+    case reducerCases.SET_PLAYING:
+      return {
+        ...state,
+        currentPlaying: action.currentPlaying,
+      };
+    case reducerCases.SET_PLAYER_STATE:
+      return {
+        ...state,
+        playerState: action.playerState,
+      };
     default:
       return state;
   }

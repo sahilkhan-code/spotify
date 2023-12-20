@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import images from "./images";
 
 export default function Login() {
   const loginHandler = () => {
@@ -27,10 +28,10 @@ export default function Login() {
   return (
     <Container>
       <img
-        src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png"
+        src={images.spotify}
         alt="spotify"
       />
-      <button onClick={() => loginHandler()}>Connect</button>
+      <button onClick={() => loginHandler()}>Login</button>
     </Container>
   );
 }
@@ -40,23 +41,25 @@ const Container = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  background-color: green;
+  background-color: black;
   height: 100vh;
+  
   img {
     height: 30vh;
-    width: 100vh;
+    width: 30vh;
   }
   button {
     width: 50vh;
     height: 8vh;
-    background-color: black;
+    background-color: white;
     border-radius: 10vh;
-    color: #c7bfbf;
+    color: grey;
     font-size: 20px;
     margin-top: 20px;
     border-width: 0px;
     :hover {
-      color: white;
+      font-size: 20px;
+      font-weight: 550;
     }
   }
 `;

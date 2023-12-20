@@ -43,6 +43,7 @@ export default function Body() {
           })),
         };
         dispatch({ type: reducerCases.SET_PLAYLIST_DATA, selectedPlaylist });
+        console.log("sp", selectedPlaylist);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching playlist data:", error);
@@ -50,6 +51,45 @@ export default function Body() {
     };
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
+
+  const playTrack = async (
+    id,
+    name,
+    artists,
+    image,
+    context_uri,
+    track_number
+  ) => {
+    const response = await axios.put(
+      `https://api.spotify.com/v1/me/player/play`,
+      {
+        context_uri,
+        offset: {
+          position: track_number - 1,
+        },
+        position_ms: 0,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    if (response.status === 204) {
+      const currentPlaying = {
+        id,
+        name,
+        artists,
+        image,
+      };
+      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    } else {
+      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    }
+  };
+
   const msToMinutesAndSeconds = (ms) => {
     var minutes = Math.floor(ms / 60000);
     var seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -95,7 +135,20 @@ export default function Body() {
                 },
                 index
               ) => (
-                <div className="bottom" key={id}>
+                <div
+                  className="bottom"
+                  key={id}
+                  onClick={() =>
+                    playTrack(
+                      id,
+                      name,
+                      artists,
+                      image,
+                      context_uri,
+                      track_number
+                    )
+                  }
+                >
                   <div className="index">
                     <span>{index + 1}</span>
                   </div>
@@ -140,7 +193,8 @@ const Container = styled.div`
       width: 40vh;
       margin-right: 40px;
       border-radius: 10px;
-      border: solid white 3px;
+      border: solid white 1.5px;
+      padding: 3px;
     }
     .containerText {
       color: white;

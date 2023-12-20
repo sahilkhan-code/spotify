@@ -127,10 +127,11 @@ const ContainerSidebar = styled.div`
   border-radius: 10px;
 
   img {
-    height: 8vh;
+    height: 7%.5;
     width: 25.5vh;
     margin-top: 25px;
     margin-left: 20px;
+    margin-bottom: 10px;
   }
   ul {
     list-style: none;

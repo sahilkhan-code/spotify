@@ -59,11 +59,11 @@ export default function () {
 const Container = styled.div`
   color: white;
   font-size: 12px;
-  /* width: 50%; */
+  width: 15vw;
   margin: 10px;
   .image {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     margin-right: 10px;
     border-radius: 10px;
   }

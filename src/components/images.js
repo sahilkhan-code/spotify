@@ -1,5 +1,6 @@
 const images = {
   profile: require("../images/profile-user.png"),
-  search : require("../images/search.png")
+  search : require("../images/search.png"),
+  spotify : require("../images/spoticon.png")
 };
 export default images;

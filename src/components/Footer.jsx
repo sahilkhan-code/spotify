@@ -25,4 +25,8 @@ export default function Footer() {
 }
 
 const Container = styled.div`
+/* display: flex; */
+/* flex-direction: row; */
+justify-content:space-around
+
 `;
