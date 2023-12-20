@@ -4,6 +4,7 @@ import axios from "axios";
 import { reducerCases } from "../utils/constants";
 import styled from "styled-components";
 import Modal from "./Modal";
+import { BsClockFill } from "react-icons/bs";
 
 export default function Body() {
   let [loading, setLoading] = useState(false);
@@ -60,33 +61,37 @@ export default function Body() {
     context_uri,
     track_number
   ) => {
-    const response = await axios.put(
-      `https://api.spotify.com/v1/me/player/play`,
-      {
-        context_uri,
-        offset: {
-          position: track_number - 1,
+    try {
+      const response = await axios.put(
+        `https://api.spotify.com/v1/me/player/play`,
+        {
+          context_uri,
+          offset: {
+            position: track_number - 1,
+          },
+          position_ms: 0,
         },
-        position_ms: 0,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (response.status === 204) {
+        const currentPlaying = {
+          id,
+          name,
+          artists,
+          image,
+        };
+        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      } else {
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
       }
-    );
-    if (response.status === 204) {
-      const currentPlaying = {
-        id,
-        name,
-        artists,
-        image,
-      };
-      dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
-      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
-    } else {
-      dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+    } catch (error) {
+      alert("Premium Required");
     }
   };
 
@@ -116,7 +121,9 @@ export default function Body() {
                 <span>ALBUM</span>
               </div>
               <div className="col">
-                <span>Duration</span>
+                <span>
+                  <BsClockFill />
+                </span>
               </div>
             </div>
           </div>
@@ -217,7 +224,6 @@ const Container = styled.div`
       flex-direction: row;
       margin-bottom: 10px;
       padding: 5px;
-      /* border-radius: 10px; */
       border-bottom: solid black 1px;
       .list {
         flex-direction: row;

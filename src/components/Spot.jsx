@@ -36,12 +36,14 @@ export default function Spot() {
         <div className="spotify_body">
           <ContainerSidebar>
             <div className="top_links">
+              <Link to="/" >
               <div className="logo">
                 <img
                   src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_White.png"
                   alt="spotify"
                 />
               </div>
+              </Link>
               <ul>
                 <Link to="/" style={{ textDecoration: "none" }}>
                   <li>
@@ -110,7 +112,6 @@ const Container = styled.div`
     width: 100%;
   }
   .spotify_footer {
-    /* height: 100%; */
     background-color: black;
     border-top: solid white 1px;
   }
@@ -158,6 +159,11 @@ const ContainerSidebar = styled.div`
         font-size: 17px;
         font-weight: bold;
       }
+    }
+  }
+  .logo{
+    :hover{
+      cursor: pointer;
     }
   }
 `;

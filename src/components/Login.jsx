@@ -51,15 +51,17 @@ const Container = styled.div`
   button {
     width: 50vh;
     height: 8vh;
-    background-color: white;
+    background-color:#3db567;
     border-radius: 10vh;
-    color: grey;
+    color: white;
     font-size: 20px;
     margin-top: 20px;
     border-width: 0px;
+    font-weight: bold;
     :hover {
       font-size: 20px;
       font-weight: 550;
+      cursor: pointer;
     }
   }
 `;

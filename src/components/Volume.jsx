@@ -1,27 +1,30 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
-import { CgVolume } from "react-icons/cg";
-import { BsVolumeUpFill } from "react-icons/bs";
 import { IoVolumeHigh } from "react-icons/io5";
 
 export default function Volume() {
   const [{ token }] = useStateProvider();
   const setVolume = async (e) => {
-    await axios.put(
-      "https://api.spotify.com/v1/me/player/volume",
-      {},
-      {
-        params: {
-          volume_percent: parseInt(e.target.value),
-        },
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    try{
+      await axios.put(
+        "https://api.spotify.com/v1/me/player/volume",
+        {},
+        {
+          params: {
+            volume_percent: parseInt(e.target.value),
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    }
+    catch(error){
+      alert("Premium Required")
+    }
   };
   return (
     <Container>

@@ -16,32 +16,44 @@ export default function PlayerControls() {
 
   const changeState = async () => {
     const state = playerState ? "pause" : "play";
-    await axios.put(
-      `https://api.spotify.com/v1/me/player/${state}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    try{
+      await axios.put(
+        `https://api.spotify.com/v1/me/player/${state}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    }
+    catch(error){
+      alert("Premium Required")
+    }
+    
     dispatch({
       type: reducerCases.SET_PLAYER_STATE,
       playerState: !playerState,
     });
   };
   const changeTrack = async (type) => {
-    await axios.post(
-      `https://api.spotify.com/v1/me/player/${type}`,
-      {},
-      {
-        headers: { 
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    try{
+      await axios.post(
+        `https://api.spotify.com/v1/me/player/${type}`,
+        {},
+        {
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    }
+    catch(error){
+      alert("Premium Required")
+    }
+    
     dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
     const response1 = await axios.get(
       "https://api.spotify.com/v1/me/player/currently-playing",
