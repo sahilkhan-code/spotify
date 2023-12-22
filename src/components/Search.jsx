@@ -11,7 +11,7 @@ import { BarLoader } from "react-spinners";
 import Modal from "./Modal";
 
 export default function Search() {
-  const [{ token, searchData, topData, userInfo }, dispatch] =
+  const [{ token, searchData, topData, userInfo, alert }, dispatch] =
     useStateProvider();
   const [search, setSearch] = useState("");
   const [topTracksVisible, setTopTracksVisible] = useState(true);
@@ -21,29 +21,73 @@ export default function Search() {
   useEffect(() => {
     setLoading(true);
     const usersTopTracks = async () => {
-      const response = await axios.get(
-        `https://api.spotify.com/v1/me/top/tracks`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { items } = response.data;
-      const topData = items.map((data) => ({
-        id: data.id,
-        name: data.name,
-        trackUri: data.href,
-        trackNumber: data.track_number,
-        artist: data.artists.map((artist) => artist.name),
-        image: data.album.images[0].url,
-      }));
-      dispatch({ type: reducerCases.SET_TOP_DATA, topData });
-      setLoading(false);
+      try {
+        const response = await axios.get(
+          `https://api.spotify.com/v1/me/top/tracks`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const { items } = response.data;
+        const topData = items.map((data) => ({
+          id: data.id,
+          name: data.name,
+          artist: data.artists.map((artist) => artist.name),
+          image: data.album.images[0].url,
+          context_uri: data.uri,
+          track_number: data.track_number,
+        }));
+        dispatch({ type: reducerCases.SET_TOP_DATA, topData });
+        setLoading(false);
+      } catch (error) {}
     };
     usersTopTracks();
   }, []);
+
+  const playTrack = async (
+    id,
+    name,
+    artists,
+    image,
+    context_uri,
+    track_number
+  ) => {
+    try {
+      const response = await axios.put(
+        `https://api.spotify.com/v1/me/player/play`,
+        {
+          context_uri,
+          offset: {
+            position: track_number - 1,
+          },
+          position_ms: 0,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (response.status === 204) {
+        const currentPlaying = {
+          id,
+          name,
+          artists,
+          image,
+        };
+        dispatch({ type: reducerCases.SET_PLAYING, currentPlaying });
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      } else {
+        dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
+      }
+    } catch (error) {
+      dispatch({ type: reducerCases.SET_ALERT, alert: true });
+    }
+  };
 
   const searchHandler = async (event) => {
     setLoading(true);
@@ -69,7 +113,6 @@ export default function Search() {
     setLoading(false);
   };
   const tracksHandler = (selectedPlaylistId) => {
-    console.log(selectedPlaylistId);
     dispatch({ type: reducerCases.SET_PLAYLIST_ID, selectedPlaylistId });
   };
 
@@ -135,16 +178,23 @@ export default function Search() {
               </div>
               <div className="cardouter">
                 {topData.map((item, index) => (
-                  // <Link
-                  //   to="/body"
-                  //   key={item.id}
-                  //   style={{ textDecoration: "none" }}
-                  // >
-                  <div className="cardinner">
+                  <div
+                    className="cardinner"
+                    onClick={() =>
+                      playTrack(
+                        item.id,
+                        item.name,
+                        item.artists,
+                        item.image,
+                        item.context_uri,
+                        item.track_number
+                      )
+                    }
+                  >
                     <img src={item.image} alt="" className="cardImg" />
+                    <img src={images.playIcon} alt="" className="playicon" />
                     <div className="name">{item.name}</div>
                   </div>
-                  // </Link>
                 ))}
               </div>
             </div>
@@ -236,7 +286,7 @@ const Container = styled.div`
   }
   .cardinner {
     width: 14vw;
-    background-color: black;
+    background-color: #1b1919;
     margin: 10px;
     border-radius: 10px;
     padding: 10px;
@@ -281,5 +331,10 @@ const Container = styled.div`
     overflow: hidden;
     margin-left: 10px;
     margin-top: 10px;
+  }
+  .playicon {
+    height: 35px;
+    width: 35px;
+    margin-top: -100px;
   }
 `;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   BsFillPlayCircleFill,
@@ -12,11 +12,11 @@ import axios from "axios";
 import { reducerCases } from "../utils/constants";
 
 export default function PlayerControls() {
-  const [{ token, playerState }, dispatch] = useStateProvider();
+  const [{ token, playerState,alert }, dispatch] = useStateProvider();
 
   const changeState = async () => {
     const state = playerState ? "pause" : "play";
-    try{
+    try {
       await axios.put(
         `https://api.spotify.com/v1/me/player/${state}`,
         {},
@@ -27,33 +27,31 @@ export default function PlayerControls() {
           },
         }
       );
+    } catch (error) {
+      dispatch({ type: reducerCases.SET_ALERT, alert:true });
     }
-    catch(error){
-      alert("Premium Required")
-    }
-    
+
     dispatch({
       type: reducerCases.SET_PLAYER_STATE,
       playerState: !playerState,
     });
   };
   const changeTrack = async (type) => {
-    try{
+    try {
       await axios.post(
         `https://api.spotify.com/v1/me/player/${type}`,
         {},
         {
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
         }
       );
+    } catch (error) {
+      dispatch({ type: reducerCases.SET_ALERT, alert:true });
     }
-    catch(error){
-      alert("Premium Required")
-    }
-    
+
     dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
     const response1 = await axios.get(
       "https://api.spotify.com/v1/me/player/currently-playing",
@@ -76,6 +74,7 @@ export default function PlayerControls() {
       dispatch({ type: reducerCases.SET_PLAYING, currentPlaying: null });
     }
   };
+
   return (
     <Container>
       <div className="shuffle">

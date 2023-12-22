@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useStateProvider } from "../utils/StateProvider";
 import { IoVolumeHigh } from "react-icons/io5";
+import { reducerCases } from "../utils/constants";
 
 export default function Volume() {
-  const [{ token }] = useStateProvider();
+  const [{ token,alert }, dispatch] =
+  useStateProvider();
+
   const setVolume = async (e) => {
-    try{
+    try {
       await axios.put(
         "https://api.spotify.com/v1/me/player/volume",
         {},
@@ -21,16 +24,19 @@ export default function Volume() {
           },
         }
       );
-    }
-    catch(error){
-      alert("Premium Required")
+    } catch (error) {
+      dispatch({ type: reducerCases.SET_ALERT, alert:true });
     }
   };
+  const okHandler = () => {
+    
+  };
+
   return (
     <Container>
-        <div className="vol">
-        <IoVolumeHigh style={{color:'white'}} />
-        </div>
+      <div className="vol">
+        <IoVolumeHigh style={{ color: "white" }} />
+      </div>
       <input type="range" onMouseUp={(e) => setVolume(e)} min={0} max={100} />
     </Container>
   );
@@ -47,12 +53,11 @@ const Container = styled.div`
     margin: 10px;
     height: 7px;
   }
-  .vol{
+  .vol {
     margin-top: 3px;
-    svg{
-        width: 20px;
-        height: 20px;
-
+    svg {
+      width: 20px;
+      height: 20px;
     }
   }
 `;

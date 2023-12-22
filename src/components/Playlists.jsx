@@ -9,23 +9,26 @@ import { IoLibrary } from "react-icons/io5";
 export default function Playlists() {
   const [{ token, playlists, selectedPlaylistId, userInfo }, dispatch] =
     useStateProvider();
-
+console.log(selectedPlaylistId)
   useEffect(() => {
     const getPlaylistData = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/me/playlists",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { items } = response.data;
-      const playlists = items.map((name, id) => {
-        return { name, id };
-      });
-      dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/me/playlists",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const { items } = response.data;
+        const playlists = items.map((name, id) => {
+          return { name, id };
+        });
+        dispatch({ type: reducerCases.SET_PLAYLISTS, playlists });
+      } catch (error) {
+      }
     };
     getPlaylistData();
   }, [token, dispatch]);
@@ -39,7 +42,7 @@ export default function Playlists() {
     <Container>
       {playlists && (
         <ul>
-          <div style={{marginLeft:20,marginTop:20}}>
+          <div style={{ marginLeft: 20, marginTop: 20 }}>
             <IoLibrary />
             <span style={{ marginLeft: 13 }}>Your Library</span>
           </div>
@@ -112,7 +115,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
   }
-  .name{
+  .name {
     color: black;
   }
 `;

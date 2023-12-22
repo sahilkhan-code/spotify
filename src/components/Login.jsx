@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import images from "./images";
+import { useStateProvider } from "../utils/StateProvider";
 
 export default function Login() {
   const loginHandler = () => {
-    let clientId = "3980a8c6c5ba4feba48b4c9c8f677ac1";
+    let clientId = "5469bda43c1849b890a89e6b0eb00e39";
     let redirectUrl = "http://localhost:3000/";
     let apiUrl = "https://accounts.spotify.com/authorize/";
     let scope = [

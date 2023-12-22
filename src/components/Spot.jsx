@@ -9,40 +9,52 @@ import { MdHomeFilled, MdSearch } from "react-icons/md";
 import Playlists from "./Playlists";
 import Home from "./Home";
 import Search from "./Search";
+import { AlertComp } from "./AlertComp";
 
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 
 export default function Spot() {
   const [{ token, userInfo }, dispatch] = useStateProvider();
+  const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     const getUserInfo = async () => {
-      let { data } = await axios.get("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-      });
-      let userInfo = {
-        userId: data.id,
-        userName: data.display_name,
-      };
-      dispatch({ type: reducerCases.SET_USERINFO, userInfo });
+      try {
+        let { data } = await axios.get("https://api.spotify.com/v1/me", {
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+        });
+        let userInfo = {
+          userId: data.id,
+          userName: data.display_name,
+        };
+        dispatch({ type: reducerCases.SET_USERINFO, userInfo });
+      } catch (error) {
+        setIsVisible(true);
+      }
     };
     getUserInfo();
   }, [token, dispatch]);
+
+  const okHandler = () =>{
+    setIsVisible(false)
+  }
+
   return (
     <Router>
       <Container>
+        <AlertComp okHandler={okHandler} isVisible={isVisible} title={'Please SignUp for Spotify Developer Dashboard for testing.'} />
         <div className="spotify_body">
           <ContainerSidebar>
             <div className="top_links">
-              <Link to="/" >
-              <div className="logo">
-                <img
-                  src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_White.png"
-                  alt="spotify"
-                />
-              </div>
+              <Link to="/">
+                <div className="logo">
+                  <img
+                    src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_White.png"
+                    alt="spotify"
+                  />
+                </div>
               </Link>
               <ul>
                 <Link to="/" style={{ textDecoration: "none" }}>
@@ -161,8 +173,8 @@ const ContainerSidebar = styled.div`
       }
     }
   }
-  .logo{
-    :hover{
+  .logo {
+    :hover {
       cursor: pointer;
     }
   }

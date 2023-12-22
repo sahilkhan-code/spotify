@@ -1,4 +1,4 @@
-import React, { useEffect, useState,CSSProperties } from "react";
+import React, { useEffect, useState, CSSProperties } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { reducerCases } from "../utils/constants";
@@ -8,8 +8,6 @@ import Modal from "./Modal";
 
 export default function Home(props) {
   const [{ token }, dispatch] = useStateProvider();
-
-  // const [releaseData, setReleaseData] = useState([]);
   const [toplists, setToplists] = useState([]);
   const [punjabi, setPunjabi] = useState([]);
   const [pop, setPop] = useState([]);
@@ -18,139 +16,128 @@ export default function Home(props) {
   let [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
-    // const NewRelease = async () => {
-    //   const response = await axios.get(
-    //     "https://api.spotify.com/v1/browse/new-releases",
-    //     {
-    //       headers: {
-    //         Authorization: "Bearer " + token,
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   );
-    //   let { items } = response.data.albums;
-    //   const releaseData = items.map((item) => ({
-    //     id: item.id,
-    //     name: item.name,
-    //     image: item.images[0].url,
-    //     artist: item.artists.map((data) => data.name),
-    //     albumUri: item.href,
-    //   }));
-    //   setReleaseData(releaseData);
-    // };
-
+    setLoading(true);
     const topLists = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/browse/categories/toplists/playlists",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/browse/categories/toplists/playlists",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const { items } = response.data.playlists;
+        const { items } = response.data.playlists;
 
-      const topListsData = items.map((data) => ({
-        id: data.id,
-        name: data.name,
-        href: data.href,
-        image: data.images[0].url,
-        tracksUrl: data.tracks.href,
-      }));
-      setToplists(topListsData);
+        const topListsData = items.map((data) => ({
+          id: data.id,
+          name: data.name,
+          href: data.href,
+          image: data.images[0].url,
+          tracksUrl: data.tracks.href,
+        }));
+        setToplists(topListsData);
+      } catch (error) {}
     };
 
     const punjabi = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFKSopHMaeIeI/playlists",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFKSopHMaeIeI/playlists",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const { items } = response.data.playlists;
+        const { items } = response.data.playlists;
 
-      const punjabiData = items.map((data) => ({
-        id: data.id,
-        name: data.name,
-        href: data.href,
-        image: data.images[0].url,
-        tracksUrl: data.tracks.href,
-      }));
-      setPunjabi(punjabiData);
+        const punjabiData = items.map((data) => ({
+          id: data.id,
+          name: data.name,
+          href: data.href,
+          image: data.images[0].url,
+          tracksUrl: data.tracks.href,
+        }));
+        setPunjabi(punjabiData);
+      } catch (error) {}
     };
     const pop = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFEC4WFtoNRpw/playlists",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFEC4WFtoNRpw/playlists",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const { items } = response.data.playlists;
+        const { items } = response.data.playlists;
 
-      const pop = items.map((data) => ({
-        id: data.id,
-        name: data.name,
-        href: data.href,
-        image: data.images[0].url,
-        tracksUrl: data.tracks.href,
-      }));
-      setPop(pop);
+        const pop = items.map((data) => ({
+          id: data.id,
+          name: data.name,
+          href: data.href,
+          image: data.images[0].url,
+          tracksUrl: data.tracks.href,
+        }));
+        setPop(pop);
+      } catch (error) {}
     };
     const romance = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFAUsdyVjCQuL/playlists",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFAUsdyVjCQuL/playlists",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const { items } = response.data.playlists;
+        const { items } = response.data.playlists;
 
-      const romance = items.map((data) => ({
-        id: data.id,
-        name: data.name,
-        href: data.href,
-        image: data.images[0].url,
-        tracksUrl: data.tracks.href,
-      }));
-      setRomance(romance);
+        const romance = items.map((data) => ({
+          id: data.id,
+          name: data.name,
+          href: data.href,
+          image: data.images[0].url,
+          tracksUrl: data.tracks.href,
+        }));
+        setRomance(romance);
+      } catch (error) {}
     };
     const summer = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFLVaM30PMBm4/playlists",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFLVaM30PMBm4/playlists",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      const { items } = response.data.playlists;
+        const { items } = response.data.playlists;
 
-      const summer = items.map((data) => ({
-        id: data.id,
-        name: data.name,
-        href: data.href,
-        image: data.images[0].url,
-        tracksUrl: data.tracks.href,
-      }));
-      setSummer(summer);
-      setLoading(false)
+        const summer = items.map((data) => ({
+          id: data.id,
+          name: data.name,
+          href: data.href,
+          image: data.images[0].url,
+          tracksUrl: data.tracks.href,
+        }));
+        setSummer(summer);
+        setLoading(false);
+      } catch (error) {}
     };
     topLists();
     punjabi();
@@ -165,27 +152,6 @@ export default function Home(props) {
 
   return (
     <Container>
-      {/* {releaseData && (
-        <>
-          <div className="title">New Release</div>
-          <div className="card">
-            <div className="cardouter">
-              {releaseData.map((item, index) => (
-                <Link to="/body" key={item.id}>
-                  <div
-                    className="cardinner"
-                    onClick={() => tracksHandler(item.id)}
-                  >
-                    <img src={item.image} alt="" className="cardImg" />
-                    <div className="name">{item.name}</div>
-                    <div className="artists">{item.artist.join(", ")}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </>
-      )} */}
       <Modal isLoading={loading} />
       {toplists && (
         <>
@@ -193,7 +159,11 @@ export default function Home(props) {
           <div className="card">
             <div className="cardouter">
               {toplists.map((item, index) => (
-                <Link to="/body" key={item.id} style={{ textDecoration: "none" }}>
+                <Link
+                  to="/body"
+                  key={item.id}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className="cardinner"
                     onClick={() => tracksHandler(item.id)}
@@ -213,7 +183,11 @@ export default function Home(props) {
           <div className="card">
             <div className="cardouter">
               {punjabi.map((item, index) => (
-                <Link to="/body" key={item.id} style={{ textDecoration: "none" }}>
+                <Link
+                  to="/body"
+                  key={item.id}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className="cardinner"
                     onClick={() => tracksHandler(item.id)}
@@ -233,7 +207,11 @@ export default function Home(props) {
           <div className="card">
             <div className="cardouter">
               {pop.map((item, index) => (
-                <Link to="/body" key={item.id} style={{ textDecoration: "none" }}>
+                <Link
+                  to="/body"
+                  key={item.id}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className="cardinner"
                     onClick={() => tracksHandler(item.id)}
@@ -253,7 +231,11 @@ export default function Home(props) {
           <div className="card">
             <div className="cardouter">
               {romance.map((item, index) => (
-                <Link to="/body" key={item.id} style={{ textDecoration: "none" }}>
+                <Link
+                  to="/body"
+                  key={item.id}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className="cardinner"
                     onClick={() => tracksHandler(item.id)}
@@ -273,7 +255,11 @@ export default function Home(props) {
           <div className="card">
             <div className="cardouter">
               {summer.map((item, index) => (
-                <Link to="/body" key={item.id}style={{ textDecoration: "none" }}>
+                <Link
+                  to="/body"
+                  key={item.id}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className="cardinner"
                     onClick={() => tracksHandler(item.id)}
@@ -307,7 +293,7 @@ const Container = styled.div`
     flex-direction: row;
   }
   .cardinner {
-    background-color: black;
+    background-color: #1b1919;
     margin: 10px;
     border-radius: 10px;
     padding: 10px;

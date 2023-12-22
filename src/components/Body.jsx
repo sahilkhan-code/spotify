@@ -5,14 +5,17 @@ import { reducerCases } from "../utils/constants";
 import styled from "styled-components";
 import Modal from "./Modal";
 import { BsClockFill } from "react-icons/bs";
+import AlertPremiumComp from "./AlertPremiumComp";
+
 
 export default function Body() {
   let [loading, setLoading] = useState(false);
-
-  const [{ token, selectedPlaylistId, selectedPlaylist, playlists }, dispatch] =
+  // const [isVisible, setIsVisible] = useState(false);
+  const [{ token, selectedPlaylistId, selectedPlaylist, playlists,alert }, dispatch] =
     useStateProvider();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     setLoading(true);
     const getInitialPlaylist = async () => {
       try {
@@ -44,11 +47,8 @@ export default function Body() {
           })),
         };
         dispatch({ type: reducerCases.SET_PLAYLIST_DATA, selectedPlaylist });
-        console.log("sp", selectedPlaylist);
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching playlist data:", error);
-      }
+      } catch (error) {}
     };
     getInitialPlaylist();
   }, [token, dispatch, selectedPlaylistId]);
@@ -91,7 +91,9 @@ export default function Body() {
         dispatch({ type: reducerCases.SET_PLAYER_STATE, playerState: true });
       }
     } catch (error) {
-      alert("Premium Required");
+      // setIsVisible(true);
+      dispatch({ type: reducerCases.SET_ALERT, alert:true });
+
     }
   };
 
@@ -100,8 +102,15 @@ export default function Body() {
     var seconds = ((ms % 60000) / 1000).toFixed(0);
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   };
+
+  const okHandler = () => {
+    // setIsVisible(false);
+    dispatch({ type: reducerCases.SET_ALERT, alert:false });
+  };
+
   return (
     <Container>
+      <AlertPremiumComp okHandler={okHandler} />
       <Modal isLoading={loading} />
       {selectedPlaylist && (
         <>

@@ -9,27 +9,29 @@ export default function () {
 
   useEffect(() => {
     const getCurrentTrack = async () => {
-      const response = await axios.get(
-        "https://api.spotify.com/v1/me/player/currently-playing",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/me/player/currently-playing",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      if (response.data !== "") {
-        const currentTrackData = {
-          timeStamp: response.data.timestamp,
-          progress: response.data.progress_ms,
-          name: response.data.item.name,
-          id: response.data.item.id,
-          artist: response.data.item.artists.map((artists) => artists.name),
-          image: response.data.item.album.images[0].url,
-        };
-        dispatch({ type: reducerCases.SET_CURRENT_DATA, currentTrackData });
-      }
+        if (response.data !== "") {
+          const currentTrackData = {
+            timeStamp: response.data.timestamp,
+            progress: response.data.progress_ms,
+            name: response.data.item.name,
+            id: response.data.item.id,
+            artist: response.data.item.artists.map((artists) => artists.name),
+            image: response.data.item.album.images[0].url,
+          };
+          dispatch({ type: reducerCases.SET_CURRENT_DATA, currentTrackData });
+        }
+      } catch (error) {}
     };
 
     getCurrentTrack();
