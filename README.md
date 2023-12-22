@@ -9,3 +9,6 @@ Build by: React js, styled Component, Axios,react-router-dom,react-icons, and Sp
 
 Note: As of Now Spotify doesn't allow develops to use it's premium APIs without a subscription,
 for example : playerControls and Volume.
+
+
+<img width="960" alt="image" src="https://github.com/sahilkhan-code/spotify/assets/68678080/7019942b-ba1c-48b1-a717-6a347baae99b">
